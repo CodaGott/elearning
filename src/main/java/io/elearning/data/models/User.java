@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Entity
@@ -16,12 +18,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank(message = "Name can't be blank")
     private String fullName;
+    @NotBlank(message = "Username can't be blank")
     private String userName;
+    @Email(message = "Please provide a valid email")
     private String email;
     private LocalDate dateOfBirth;
-//    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-//    private List<Course> courses;
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;

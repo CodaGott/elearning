@@ -6,7 +6,7 @@ import io.elearning.data.models.Role;
 import java.time.LocalDate;
 import java.util.List;
 
-public class User {
+public class UserDto {
     private String fullName;
     private String userName;
     private String email;

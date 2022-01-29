@@ -2,7 +2,7 @@ package io.elearning.data.dto;
 
 import java.time.LocalDateTime;
 
-public class Course {
+public class CourseDto {
     private String courseName;
     private String courseDescription;
     private LocalDateTime createdOn;

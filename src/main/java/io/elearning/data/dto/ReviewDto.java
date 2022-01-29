@@ -5,7 +5,7 @@ import io.elearning.data.models.User;
 
 import java.util.List;
 
-public class Review {
+public class ReviewDto {
     private Integer reviewPoint; // can't be more than 5
     private String reviewDescription;
     private User users;
