@@ -1,7 +1,12 @@
 package io.elearning.web.service;
 
 import io.elearning.data.dto.UserDto;
+import io.elearning.data.models.Role;
 import io.elearning.data.models.User;
+import io.elearning.exceptions.UserException;
+import io.elearning.web.controller.UserRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,39 +15,92 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService{
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     @Override
-    public User createUser(UserDto userDto) {
-        return null;
+    public User createUser(UserDto userDto) throws UserException {
+
+        User user = new User();
+
+        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+
+        if (optionalUser.isPresent()){
+            throw new UserException("User with email already exists");
+        }
+        modelMapper.map(userDto, user);
+        user.setRole(Role.STUDENT);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User createAdmin(UserDto userDto) throws UserException {
+
+        User user = new User();
+
+        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+        if (optionalUser.isPresent()){
+            throw new UserException("User with email already exist");
+        }
+        modelMapper.map(userDto, user);
+        user.setRole(Role.ADMIN);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User createTeacher(UserDto userDto) throws UserException {
+        User user = new User();
+
+        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+
+        if (optionalUser.isPresent()){
+            throw new UserException("User with email already exists");
+        }
+        modelMapper.map(userDto, user);
+        user.setRole(Role.TEACHER);
+        return userRepository.save(user);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return null;
+        return userRepository.findAll();
     }
 
     @Override
-    public User updateUserInfo(UserDto userDto, Long userId) {
-        return null;
+    public User updateUserInfo(UserDto userDto, Long userId) throws UserException {
+        User userToUpdate = userRepository.findById(userId).orElseThrow(() ->
+                new UserException("The user you want to update does not exist"));
+        modelMapper.map(userDto, userToUpdate);
+        return userRepository.save(userToUpdate);
     }
 
     @Override
-    public Optional<User> getUserByEmail(String email) {
-        return Optional.empty();
+    public User getUserByEmail(String email) throws UserException {
+        return userRepository.findByEmail(email).orElseThrow(() ->
+                new UserException("User with email not found"));
     }
 
     @Override
-    public Optional<User> getUserByUsername(String username) {
-        return Optional.empty();
+    public User getUserByUsername(String username) throws UserException {
+        return userRepository.findByUserName(username).orElseThrow(
+                () -> new UserException("User with " + username + " username not found"));
     }
 
     @Override
-    public Optional<User> getUserById(Long userId) {
-        return Optional.empty();
+    public User getUserById(Long userId) throws UserException {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new UserException("User not found with id: " +userId));
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public void deleteUser(Long userId) throws UserException {
+        User userToDelete = userRepository.findById(userId).orElseThrow(() ->
+                new UserException("User with the id not found"));
 
+        userRepository.delete(userToDelete);
     }
 }

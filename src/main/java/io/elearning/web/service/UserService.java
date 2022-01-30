@@ -2,16 +2,20 @@ package io.elearning.web.service;
 
 import io.elearning.data.dto.UserDto;
 import io.elearning.data.models.User;
+import io.elearning.exceptions.UserException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
-    User createUser (UserDto userDto);
+    User createUser (UserDto userDto) throws UserException;
+    User createAdmin (UserDto userDto) throws UserException;
+    User createTeacher (UserDto userDto) throws UserException;
+
+
     List<User> getAllUsers();
-    User updateUserInfo(UserDto userDto, Long userId);
-    Optional<User> getUserByEmail(String email);
-    Optional<User> getUserByUsername(String username);
-    Optional<User> getUserById(Long userId);
-    void deleteUser (Long userId);
+    User updateUserInfo(UserDto userDto, Long userId) throws UserException;
+    User getUserByEmail(String email) throws UserException;
+    User getUserByUsername(String username) throws UserException;
+    User getUserById(Long userId) throws UserException;
+    void deleteUser (Long userId) throws UserException;
 }

@@ -21,8 +21,10 @@ public class User {
     @NotBlank(message = "Name can't be blank")
     private String fullName;
     @NotBlank(message = "Username can't be blank")
+    @Column(unique = true, nullable = false)
     private String userName;
     @Email(message = "Please provide a valid email")
+    @Column(unique = true, nullable = false)
     private String email;
     private LocalDate dateOfBirth;
     @ManyToOne
