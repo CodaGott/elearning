@@ -17,8 +17,6 @@ public class Review {
     private String reviewDescription;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private User users;
-//    @JoinColumn(name = "course_id")
-    @MapsId
     @ManyToOne(fetch = FetchType.LAZY)
     private Course course;
 

@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,7 @@ public class Course {
     private Long id;
     @NotBlank(message = "Course must have a name")
     private String courseName;
+    private String courseImageUrl;
     @NotBlank(message = "Course must have a description")
     private String courseDescription;
     @NotBlank(message = "Course must have a price")
@@ -32,6 +34,15 @@ public class Course {
     private LocalDateTime updated;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Review> reviews;
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<User> users;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "users_id")
+    private User user;
+
+    public void addReview(Review review){
+        if (reviews == null){
+            this.reviews = new ArrayList<>();
+        }
+        reviews.add(review);
+    }
+
 }

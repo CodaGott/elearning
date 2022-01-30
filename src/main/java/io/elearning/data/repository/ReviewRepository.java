@@ -1,4 +1,4 @@
-package io.elearning.web.controller;
+package io.elearning.data.repository;
 
 import io.elearning.data.models.Review;
 import org.springframework.data.jpa.repository.JpaRepository;

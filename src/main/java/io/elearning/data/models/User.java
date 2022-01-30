@@ -8,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -27,9 +29,15 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
     private LocalDate dateOfBirth;
-    @ManyToOne
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Course> courses;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public void addCourse(Course course){
+        if (courses == null){
+            this.courses = new ArrayList<>();
+        }
+        courses.add(course);
+    }
 }

@@ -2,18 +2,19 @@ package io.elearning.web.service;
 
 import io.elearning.data.dto.CourseDto;
 import io.elearning.data.models.Course;
+import io.elearning.exceptions.CourseException;
+import io.elearning.exceptions.UserException;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 public interface CourseService {
 
-    Course createCourse(CourseDto courseDto);
-    Course updateCourse(CourseDto courseDto, Long courseId);
+    Course createCourse(CourseDto courseDto, Long userId) throws UserException;
+    Course updateCourse(CourseDto courseDto, Long courseId) throws CourseException;
     List<Course> getAllCourses();
-    Optional<Course> getACourseByName(String courseName);
-    Optional<Course> getACourseByCost(BigDecimal price);
-    void deleteACourse(Long courseId);
-    Course getACourseById(Long courseId);
+    Course getACourseByName(String courseName) throws CourseException;
+    List<Course> getCoursesByPrice(BigDecimal price);
+    void deleteACourse(Long courseId) throws CourseException;
+    Course getACourseById(Long courseId) throws CourseException;
 }
