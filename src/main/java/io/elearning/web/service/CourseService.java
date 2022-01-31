@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CourseService {
 
-    Course createCourse(CourseDto courseDto, Long userId) throws UserException;
+    Course createCourse(CourseDto courseDto, Long userId) throws UserException, CourseException;
     Course updateCourse(CourseDto courseDto, Long courseId) throws CourseException;
     List<Course> getAllCourses();
     Course getACourseByName(String courseName) throws CourseException;

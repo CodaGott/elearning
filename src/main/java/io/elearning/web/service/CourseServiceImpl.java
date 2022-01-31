@@ -2,6 +2,7 @@ package io.elearning.web.service;
 
 import io.elearning.data.dto.CourseDto;
 import io.elearning.data.models.Course;
+import io.elearning.data.models.Role;
 import io.elearning.data.models.User;
 import io.elearning.exceptions.CourseException;
 import io.elearning.exceptions.UserException;
@@ -30,10 +31,14 @@ public class CourseServiceImpl implements CourseService{
 
 
     @Override
-    public Course createCourse(CourseDto courseDto, Long userId) throws UserException {
+    public Course createCourse(CourseDto courseDto, Long userId) throws UserException, CourseException {
         User courseOwner = userRepository.findById(userId).orElseThrow(() ->
                 new UserException("This user does not exist"));
         Course course = new Course();
+
+        if (courseOwner.getRole() != Role.TEACHER){
+            throw new CourseException("You can't create a course if you are not a teacher");
+        }
 
         modelMapper.map(courseDto, course);
         courseOwner.addCourse(course);

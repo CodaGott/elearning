@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ public class User {
     @NotBlank(message = "Username can't be blank")
     @Column(unique = true, nullable = false)
     private String userName;
+    @NotNull(message = "Provide a password")
+    private String password;
     @Email(message = "Please provide a valid email")
     @Column(unique = true, nullable = false)
     private String email;
