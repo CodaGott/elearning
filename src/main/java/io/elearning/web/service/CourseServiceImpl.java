@@ -29,6 +29,10 @@ public class CourseServiceImpl implements CourseService{
     @Autowired
     private ModelMapper modelMapper;
 
+    public CourseServiceImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
 
     @Override
     public Course createCourse(CourseDto courseDto, Long userId) throws UserException, CourseException {
@@ -37,11 +41,13 @@ public class CourseServiceImpl implements CourseService{
         Course course = new Course();
 
         if (courseOwner.getRole() != Role.TEACHER){
+            log.info("You can't create a course if you are not a teacher");
             throw new CourseException("You can't create a course if you are not a teacher");
         }
 
         modelMapper.map(courseDto, course);
         courseOwner.addCourse(course);
+        userRepository.save(courseOwner);
         log.info("Saving course -> {}", course);
         return courseRepository.save(course);
     }
