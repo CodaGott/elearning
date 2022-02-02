@@ -42,7 +42,7 @@ public class CourseServiceImpl implements CourseService{
 
         if (courseOwner.getRole() != Role.TEACHER){
             log.info("You can't create a course if you are not a teacher");
-            throw new CourseException("You can't create a course if you are not a teacher");
+            throw new CourseException("You can't create a course if you are not a teacher test this");
         }
 
         modelMapper.map(courseDto, course);
