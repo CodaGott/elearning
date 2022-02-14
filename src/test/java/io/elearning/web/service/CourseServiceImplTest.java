@@ -122,4 +122,17 @@ class CourseServiceImplTest {
 
     }
 
+    @Test
+    void courseInfoCanBeDeleted() throws CourseException {
+        Course course = new Course();
+        String courseName = "Course Name";
+        course.setCourseName(courseName);
+        Long courseId = 1L;
+
+        when(courseRepository.findById(courseId)).thenReturn(Optional.of(course));
+        courseService.getACourseById(courseId);
+
+        assertThat(course.getCourseName()).isEqualTo("Course Name");
+    }
+
 }
