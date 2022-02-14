@@ -151,4 +151,17 @@ class CourseServiceImplTest {
         assertThat(courseService.getACourseByName(name)).isEqualTo(course);
     }
 
+    @Test
+    void courseCanBeDeleted() throws CourseException {
+        Course course = new Course();
+        String courseName = "Course Name";
+        course.setCourseName(courseName);
+        Long courseId = 1L;
+
+        when(courseRepository.findById(courseId)).thenReturn(Optional.of(course));
+        courseService.deleteACourse(courseId);
+
+        verify(courseRepository).delete(course);
+    }
+
 }
