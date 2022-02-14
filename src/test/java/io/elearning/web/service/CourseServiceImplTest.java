@@ -135,4 +135,20 @@ class CourseServiceImplTest {
         assertThat(course.getCourseName()).isEqualTo("Course Name");
     }
 
+    @Test
+    void courseCanBeFoundUsingName() throws CourseException {
+        String name = "Course Name";
+        Course course = new Course();
+        course.setCourseName(name);
+        Course course2 = new Course();
+        course2.setCourseName("Course 2");
+        Course course3 = new Course();
+        course3.setCourseName("Course 3");
+
+        when(courseRepository.findAllByCourseName(name)).thenReturn(Optional.of(course));
+
+
+        assertThat(courseService.getACourseByName(name)).isEqualTo(course);
+    }
+
 }
