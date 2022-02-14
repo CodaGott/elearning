@@ -19,9 +19,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -74,11 +77,49 @@ class CourseServiceImplTest {
         Course course = courseArgumentCaptor.getValue();
         User capturedUser = userArgumentCaptor.getValue();
 
-//        assertThat(capturedUser.getCourses()).isNotNull();
         assertThat(capturedUser.getCourses()).isNotEmpty();
         assertThat(course.getCourseName()).isEqualTo(courseDto.getCourseName());
-//        assertEquals(capturedUser.getUserName(), "Name");
-//        assertEquals(courseDto.getCourseName(), course.getCourseName());
+    }
+
+    @Test
+    void courseInfoCanBeUpdated() throws CourseException {
+
+        Course course = new Course();
+        course.setCourseName("Python Course");
+        course.setCourseDescription("This is a python course");
+        courseRepository.save(course);
+
+        CourseDto courseDto = new CourseDto();
+        courseDto.setCourseName("My Java Course");
+        courseDto.setCourseDescription("Learn Java from me");
+
+        Long courseId = 1L;
+
+        when(courseRepository.findById(courseId)).thenReturn(Optional.of(course));
+        courseService.updateCourse(courseDto, courseId);
+        ArgumentCaptor<Course> courseArgumentCaptor = ArgumentCaptor.forClass(Course.class);
+        verify(courseRepository, times(2)).save(courseArgumentCaptor.capture());
+        Course updatedCourse = courseArgumentCaptor.getValue();
+
+        assertThat(course.getCourseName()).isEqualTo(updatedCourse.getCourseName());
+    }
+
+    @Test
+    void getAllCourse(){
+        List<Course> courses = new ArrayList<>();
+
+        Course course1 = new Course();
+        Course course2 = new Course();
+        Course course3 = new Course();
+        courses.add(course1);
+        courses.add(course2);
+        courses.add(course3);
+        courseRepository.saveAll(courses);
+
+        when(courseRepository.findAll()).thenReturn(courses);
+
+        assertEquals(3, courseService.getAllCourses().size());
+
     }
 
 }
