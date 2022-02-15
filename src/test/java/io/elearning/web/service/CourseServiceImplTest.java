@@ -20,6 +20,7 @@ import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -162,6 +163,22 @@ class CourseServiceImplTest {
         courseService.deleteACourse(courseId);
 
         verify(courseRepository).delete(course);
+    }
+
+    @Test
+    void canFindCourseUsingPrice(){
+        Course course = new Course();
+        String courseName = "Course Name";
+        course.setCourseName(courseName);
+        BigDecimal bigDecimal = new BigDecimal(600);
+        course.setCoursePrice(bigDecimal);
+        Long courseId = 1L;
+        List<Course> courses = new ArrayList<>();
+        courses.add(course);
+
+        when(courseRepository.findAllByCoursePrice(bigDecimal)).thenReturn(courses);
+
+        assertThat(courseService.getCoursesByPrice(bigDecimal)).isEqualTo(Arrays.asList(course));
     }
 
 }
