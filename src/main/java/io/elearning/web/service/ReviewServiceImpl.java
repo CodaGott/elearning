@@ -30,6 +30,12 @@ public class ReviewServiceImpl implements ReviewService{
     @Autowired
     private ReviewRepository reviewRepository;
 
+    public ReviewServiceImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
+    private ReviewServiceImpl(){}
+
 
     @Override
     public Review createAReview(ReviewDto reviewDto, Long courseId, Long userId) throws UserException, CourseException {
