@@ -55,7 +55,6 @@ class ReviewServiceImplTest {
         courseToReview.setCourseName("Good course");
         Long courseId = 1L;
         Long userId = 1L;
-        Long reviewId = 1L;
         courseToReview.setId(courseId);
 
         ReviewDto reviewDto = new ReviewDto();
@@ -66,15 +65,14 @@ class ReviewServiceImplTest {
         Review review = new Review();
 
         when(courseRepository.findById(courseId)).thenReturn(Optional.of(courseToReview));
-        when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
         reviewService.createAReview(reviewDto, courseId, userId);
 
         ArgumentCaptor<Review> captureReview = ArgumentCaptor.forClass(Review.class);
 
         verify(reviewRepository, times(1)).save(captureReview.capture());
-        review = captureReview.getValue();
+        Review capturedReview = captureReview.getValue();
 
-        assertThat(review.getCourse()).isEqualTo(reviewDto.getCourses());
+        assertThat(capturedReview.getReviewDescription()).isEqualTo(reviewDto.getReviewDescription());
 
     }
 
