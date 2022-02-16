@@ -7,6 +7,7 @@ import io.elearning.data.repository.CourseRepository;
 import io.elearning.data.repository.ReviewRepository;
 import io.elearning.data.repository.UserRepository;
 import io.elearning.exceptions.CourseException;
+import io.elearning.exceptions.ReviewException;
 import io.elearning.exceptions.UserException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,10 +78,39 @@ class ReviewServiceImplTest {
     }
 
     @Test
-    void updateReview() {
+    void updateReview() throws ReviewException {
+
+        Review reviewToUpdate = new Review();
+        reviewToUpdate.setReviewDescription("Good course");
+        reviewToUpdate.setReviewPoint(3);
+
+        ReviewDto reviewDto = new ReviewDto();
+        reviewDto.setReviewPoint(4);
+        reviewDto.setReviewDescription("This course was amazing");
+
+        Long reviewId = 1L;
+
+        when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(reviewToUpdate));
+        reviewService.updateReview(reviewDto, reviewId);
+        ArgumentCaptor<Review> captor = ArgumentCaptor.forClass(Review.class);
+
+        verify(reviewRepository, times(1)).save(captor.capture());
+        Review updatedReview = captor.getValue();
+        assertThat(reviewToUpdate.getReviewDescription()).isEqualTo(updatedReview.getReviewDescription());
     }
 
     @Test
-    void deleteAReview() {
+    void deleteAReview() throws ReviewException {
+
+        Review reviewToUpdate = new Review();
+        reviewToUpdate.setReviewDescription("Good course");
+        reviewToUpdate.setReviewPoint(3);
+        Long reviewId = 1L;
+
+        when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(reviewToUpdate));
+        reviewService.deleteAReview(reviewId);
+
+        verify(reviewRepository).delete(reviewToUpdate);
+//        assertThat(reviewService.deleteAReview(reviewId)).isEqualTo(false); // If the method returns boolean then we can assert
     }
 }
