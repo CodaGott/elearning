@@ -1,6 +1,7 @@
 package io.elearning.web.controller;
 
 import io.elearning.data.dto.UserDto;
+import io.elearning.data.models.User;
 import io.elearning.exceptions.UserException;
 import io.elearning.web.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +79,19 @@ public class UserController {
     @GetMapping("user/{email}")
     public ResponseEntity<?> getUserByEmail(@PathVariable String email){
         try {
-            userService.getUserByEmail(email);
-            return new ResponseEntity<>("User found using the email provided", HttpStatus.FOUND);
+            User user = userService.getUserByEmail(email);
+            return new ResponseEntity<>(user +" found using the email provided", HttpStatus.FOUND);
+        }
+        catch (UserException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("user/{username}")
+    public ResponseEntity<?> getUserWithUsername(@PathVariable String username){
+        try {
+            User user = userService.getUserByUsername(username);
+            return new ResponseEntity<>(user + " found with email", HttpStatus.FOUND);
         }
         catch (UserException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
