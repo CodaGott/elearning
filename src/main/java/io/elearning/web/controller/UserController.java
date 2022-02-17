@@ -98,4 +98,15 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id){
+        try {
+            userService.deleteUser(id);
+            return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+        }
+        catch (UserException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+    }
+
 }
