@@ -63,4 +63,15 @@ public class UserController {
         }
     }
 
+    @PutMapping("user/{id}")
+    public ResponseEntity<?> updateUserInfo(@RequestBody UserDto userDto, @PathVariable Long id){
+        try {
+            userService.updateUserInfo(userDto, id);
+            return new ResponseEntity<>("User info updated successfully", HttpStatus.OK);
+        }
+        catch (UserException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
