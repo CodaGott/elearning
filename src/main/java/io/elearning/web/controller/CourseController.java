@@ -58,4 +58,10 @@ public class CourseController {
     }
 
 
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllCourse(){
+        courseService.getAllCourses();
+        return new ResponseEntity<>("All Courses returned", HttpStatus.FOUND);
+    }
 }
