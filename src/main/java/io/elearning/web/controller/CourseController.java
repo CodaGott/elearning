@@ -45,4 +45,17 @@ public class CourseController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/update-course/{courseId}")
+    public ResponseEntity<?> updateCourse(@RequestBody CourseDto courseDto, @PathVariable Long courseId){
+        try {
+            courseService.updateCourse(courseDto,courseId);
+            return new ResponseEntity<>("Course Updated successfully", HttpStatus.FOUND);
+        }
+        catch (CourseException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }
