@@ -50,10 +50,10 @@ public class CourseController {
     public ResponseEntity<?> updateCourse(@RequestBody CourseDto courseDto, @PathVariable Long courseId){
         try {
             courseService.updateCourse(courseDto,courseId);
-            return new ResponseEntity<>("Course Updated successfully", HttpStatus.FOUND);
+            return new ResponseEntity<>("Course Updated successfully", HttpStatus.OK);
         }
         catch (CourseException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
         }
     }
 
@@ -63,5 +63,16 @@ public class CourseController {
     public ResponseEntity<?> getAllCourse(){
         courseService.getAllCourses();
         return new ResponseEntity<>("All Courses returned", HttpStatus.FOUND);
+    }
+
+    @DeleteMapping("/delete/{courseId}")
+    public ResponseEntity<?> deleteACourse(@PathVariable Long courseId){
+        try {
+            courseService.deleteACourse(courseId);
+            return new ResponseEntity<>("Deleted Successfully", HttpStatus.OK);
+        }
+        catch (CourseException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
+        }
     }
 }
