@@ -11,14 +11,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 public class CourseController {
 
     @Autowired
     private CourseRepository courseRepository;
 
-    @Autowired
-    private UserController userController;
 
     @Autowired
     private CourseService courseService;
@@ -74,5 +74,22 @@ public class CourseController {
         catch (CourseException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NO_CONTENT);
         }
+    }
+
+    @GetMapping("/course/{courseId}")
+    public ResponseEntity<?> getCourseById(@PathVariable Long courseId){
+        try {
+            courseService.getACourseById(courseId);
+            return new ResponseEntity<>("Course found", HttpStatus.FOUND);
+        }
+        catch (CourseException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/course/{coursePrice}")
+    public ResponseEntity<?> getCourseByPrice(@PathVariable BigDecimal coursePrice) throws CourseException {
+        courseService.getCoursesByPrice(coursePrice);
+        return new ResponseEntity<>("Found course by price", HttpStatus.FOUND);
     }
 }
