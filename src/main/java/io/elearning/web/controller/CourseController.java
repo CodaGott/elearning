@@ -1,6 +1,7 @@
 package io.elearning.web.controller;
 
 import io.elearning.data.dto.CourseDto;
+import io.elearning.data.models.Course;
 import io.elearning.data.repository.CourseRepository;
 import io.elearning.exceptions.CourseException;
 import io.elearning.exceptions.UserException;
@@ -8,10 +9,7 @@ import io.elearning.web.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class CourseController {
@@ -37,5 +35,14 @@ public class CourseController {
         }
     }
 
-
+    @GetMapping("/course/{courseName}")
+    public ResponseEntity<?> getACourseByName(@PathVariable String courseName){
+        try {
+            Course course = courseService.getACourseByName(courseName);
+            return new ResponseEntity<>("Found course" + course, HttpStatus.FOUND);
+        }
+        catch (CourseException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }
