@@ -4,12 +4,14 @@ import io.elearning.data.dto.UserDto;
 import io.elearning.data.models.User;
 import io.elearning.exceptions.UserException;
 import io.elearning.web.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController("/")
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -18,8 +20,9 @@ public class UserController {
     @PostMapping("signup")
     public ResponseEntity<?> createUserAccount(@RequestBody UserDto userDto){
         try {
-            userService.createUser(userDto);
-            return new ResponseEntity<>("Account created successfully.", HttpStatus.CREATED);
+            User newUser = userService.createUser(userDto);
+            log.info("Student account created successfully for: "+ newUser);
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         }catch (UserException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -28,8 +31,9 @@ public class UserController {
     @PostMapping("admin-signup")
     public ResponseEntity<?> createAdminAccount(@RequestBody UserDto userDto){
         try {
-            userService.createAdmin(userDto);
-            return new ResponseEntity<>("Admin Account created successfully", HttpStatus.CREATED);
+            User adminUser = userService.createAdmin(userDto);
+            log.info(" Admin Account created successfully");
+            return new ResponseEntity<>(adminUser, HttpStatus.CREATED);
         }
         catch (UserException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -40,25 +44,26 @@ public class UserController {
     @PostMapping("teacher-signup")
     public ResponseEntity<?> createTeacherAccount(@RequestBody UserDto userDto){
         try {
-            userService.createTeacher(userDto);
-            return new ResponseEntity<>("Teacher account created", HttpStatus.CREATED);
+            User teacher = userService.createTeacher(userDto);
+            log.info("Teacher account created");
+            return new ResponseEntity<>(teacher, HttpStatus.CREATED);
         }
         catch (UserException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("allusers")
+    @GetMapping("users")
     public ResponseEntity<?> getAllUsers(){
-        userService.getAllUsers();
-        return new ResponseEntity<>("All users", HttpStatus.OK);
+        log.info("Getting Users");
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("user/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable Long userId){
         try {
-            userService.getUserById(userId);
-            return new ResponseEntity<>("User with id of "+ userId + "found", HttpStatus.FOUND);
+            log.info("User with id of "+ userId + "found");
+            return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.FOUND);
         }catch (UserException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -67,8 +72,8 @@ public class UserController {
     @PutMapping("user/{id}")
     public ResponseEntity<?> updateUserInfo(@RequestBody UserDto userDto, @PathVariable Long id){
         try {
-            userService.updateUserInfo(userDto, id);
-            return new ResponseEntity<>("User info updated successfully", HttpStatus.OK);
+            log.info("User info updated successfully");
+            return new ResponseEntity<>(userService.updateUserInfo(userDto, id), HttpStatus.OK);
         }
         catch (UserException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -80,7 +85,8 @@ public class UserController {
     public ResponseEntity<?> getUserByEmail(@PathVariable String email){
         try {
             User user = userService.getUserByEmail(email);
-            return new ResponseEntity<>(user +" found using the email provided", HttpStatus.FOUND);
+            log.info(user +" found using " + email + " provided");
+            return new ResponseEntity<>(user, HttpStatus.FOUND);
         }
         catch (UserException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -91,7 +97,8 @@ public class UserController {
     public ResponseEntity<?> getUserWithUsername(@PathVariable String username){
         try {
             User user = userService.getUserByUsername(username);
-            return new ResponseEntity<>(user + " found with email", HttpStatus.FOUND);
+            log.info(user +" found using " + username + " provided");
+            return new ResponseEntity<>(user, HttpStatus.FOUND);
         }
         catch (UserException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -102,6 +109,7 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@PathVariable Long id){
         try {
             userService.deleteUser(id);
+            log.info("User deleted successfully");
             return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
         }
         catch (UserException e){

@@ -6,6 +6,7 @@ import io.elearning.data.repository.CourseRepository;
 import io.elearning.exceptions.CourseException;
 import io.elearning.exceptions.UserException;
 import io.elearning.web.service.CourseService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
-@RestController
+@RestController("/course/")
+@Slf4j
 public class CourseController {
 
     @Autowired
@@ -28,6 +30,7 @@ public class CourseController {
     public ResponseEntity<?> createCourse(@RequestBody CourseDto courseDto, @PathVariable Long userId){
         try {
             courseService.createCourse(courseDto, userId);
+            log.info("Course Created for user with ID: " + userId);
             return new ResponseEntity<>("Course created", HttpStatus.CREATED);
         }
         catch (CourseException | UserException e){
@@ -80,6 +83,7 @@ public class CourseController {
     public ResponseEntity<?> getCourseById(@PathVariable Long courseId){
         try {
             courseService.getACourseById(courseId);
+
             return new ResponseEntity<>("Course found", HttpStatus.FOUND);
         }
         catch (CourseException e){

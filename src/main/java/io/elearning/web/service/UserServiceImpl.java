@@ -1,11 +1,10 @@
 package io.elearning.web.service;
 
 import io.elearning.data.dto.UserDto;
-import io.elearning.data.models.Course;
 import io.elearning.data.models.Role;
 import io.elearning.data.models.User;
-import io.elearning.exceptions.UserException;
 import io.elearning.data.repository.UserRepository;
+import io.elearning.exceptions.UserException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,11 +76,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User updateUserInfo(UserDto userDto, Long userId) throws UserException {
-        Course course = new Course();
+//        Course course = new Course();
         User userToUpdate = userRepository.findById(userId).orElseThrow(() ->
                 new UserException("The user you want to update does not exist"));
         modelMapper.map(userDto, userToUpdate);
-        userToUpdate.addCourse(course);
+//        userToUpdate.addCourse(course);
         return userRepository.save(userToUpdate);
     }
 

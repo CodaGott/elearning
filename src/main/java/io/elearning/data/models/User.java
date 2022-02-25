@@ -32,7 +32,7 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
     private LocalDate dateOfBirth;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Course> courses;
     @Enumerated(EnumType.STRING)
     private Role role;
