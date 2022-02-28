@@ -81,7 +81,7 @@ public class UserController {
     }
 
 
-    @GetMapping("user/{email}")
+    @GetMapping("user-by-email/{email}")
     public ResponseEntity<?> getUserByEmail(@PathVariable String email){
         try {
             User user = userService.getUserByEmail(email);
@@ -93,7 +93,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("user/{username}")
+    @GetMapping("user_by_username/{username}")
     public ResponseEntity<?> getUserWithUsername(@PathVariable String username){
         try {
             User user = userService.getUserByUsername(username);
@@ -105,7 +105,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("deleteById/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id){
         try {
             userService.deleteUser(id);
