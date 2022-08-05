@@ -74,7 +74,7 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public List<Course> getCoursesByPrice(BigDecimal price) {
+    public List<Course> getCoursesByPrice(double price) {
         return courseRepository.findAllByCoursePrice(price);
     }
 

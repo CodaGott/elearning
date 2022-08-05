@@ -170,7 +170,7 @@ class CourseServiceImplTest {
         Course course = new Course();
         String courseName = "Course Name";
         course.setCourseName(courseName);
-        BigDecimal bigDecimal = new BigDecimal(600);
+        double bigDecimal = 600.00;
         course.setCoursePrice(bigDecimal);
         Long courseId = 1L;
         List<Course> courses = new ArrayList<>();

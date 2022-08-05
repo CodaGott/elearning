@@ -3,12 +3,12 @@ package io.elearning.data.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.math.BigDecimal;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +26,17 @@ public class Course {
     private String courseImageUrl;
     @NotBlank(message = "Course must have a description")
     private String courseDescription;
-    @NotBlank(message = "Course must have a price")
-    private BigDecimal coursePrice;
-    @CreatedDate
+    @NotNull(message = "Course must have a price")
+    private double coursePrice;
+    @CreationTimestamp
     private LocalDateTime createdOn;
-    @LastModifiedBy
+    @UpdateTimestamp
     private LocalDateTime updated;
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Review> reviews;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "users_id")
-    private User user;
+    private Long user;
 
     public void addReview(Review review){
         if (reviews == null){
@@ -44,5 +44,11 @@ public class Course {
         }
         reviews.add(review);
     }
+
+//    public void addCourseToUser(User courseOwner){
+//        if (user == null){
+//            this.user = courseOwner;
+//        }
+//    }
 
 }
